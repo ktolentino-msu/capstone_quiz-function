@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Healthy Ecosystems</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="navbar">
+    <a class="nav-logo" href="#" onclick="showPage('demo')">
+      <!-- Replace src with your actual logo file -->
+      <img src="logo.png" alt="Healthy Ecosystems" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+      <div class="logo-fallback" style="display:none">
+        <div class="logo-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="8" fill="#1a1a1a"/>
+            <circle cx="13" cy="13" r="5" fill="#7ab648"/>
+            <circle cx="27" cy="13" r="5" fill="#1a1a1a" stroke="#7ab648" stroke-width="2"/>
+            <circle cx="13" cy="27" r="5" fill="#1a1a1a" stroke="#7ab648" stroke-width="2"/>
+            <circle cx="27" cy="27" r="5" fill="#7ab648"/>
+          </svg>
+        </div>
+        <span class="logo-text">Healthy<br>Ecosystems</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#" class="nav-link" id="nav-demo" onclick="showPage('demo')">Demo</a>
+      <a href="#" class="nav-link" id="nav-about" onclick="showPage('about')">About</a>
+    </div>
+  </nav>
+
+  <!-- DEMO PAGE -->
+  <div id="page-demo" class="page">
+
+    <!-- SECTION 1: CALCULATOR -->
+    <section class="section card-section">
+      <div class="calc-left">
+        <h2 class="section-heading">Learn about your impact for</h2>
+        <div class="selector-group">
+          <select id="calc-food" class="dropdown">
+            <option>Potato Chips</option>
+            <option>Beef</option>
+            <option>Multi Grain Bread</option>
+            <option>Apples</option>
+            <option>Milk</option>
+            <option>Chicken Breast</option>
+          </select>
+        </div>
+        <div class="from-row">
+          <span class="from-label">from</span>
+          <select id="calc-store" class="dropdown">
+            <option>Aldi</option>
+            <option>Meijer</option>
+            <option>Walmart</option>
+            <option>Kroger</option>
+          </select>
+        </div>
+        <button class="btn-primary" onclick="calculate()">Calculate</button>
+      </div>
+
+      <div class="calc-right">
+        <div class="metric-card" id="card-emissions">
+          <div class="metric-label">Emissions (Monthly)</div>
+          <div class="metric-value" id="val-emissions">—</div>
+          <div class="metric-tag" id="tag-emissions"></div>
+        </div>
+        <div class="metric-card" id="card-price">
+          <div class="metric-label">Price</div>
+          <div class="metric-value" id="val-price">—</div>
+          <div class="price-product-name" id="price-product-name"></div>
+          <div class="metric-tag" id="tag-price"></div>
+        </div>
+        <div class="metric-card" id="card-local">
+          <div class="metric-label">Local Dollar</div>
+          <div class="metric-value" id="val-local">—</div>
+          <div class="metric-tag" id="tag-local"></div>
+        </div>
+        <div class="metric-card" id="card-health">
+          <div class="metric-label">Health Score</div>
+          <div class="gauge-wrap">
+            <canvas id="gauge-canvas" width="120" height="70"></canvas>
+            <div class="gauge-value" id="val-health">—</div>
+          </div>
+          <div class="metric-tag" id="tag-health"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: QUIZ -->
+    <section class="section card-section quiz-section">
+      <div class="quiz-left">
+        <h2 class="section-heading">Test your knowledge<br>for shopping at</h2>
+        <div class="selector-group">
+          <select id="quiz-store" class="dropdown" onchange="resetQuiz()">
+            <option>Aldi</option>
+            <option>Meijer</option>
+            <option>Walmart</option>
+            <option>Kroger</option>
+          </select>
+        </div>
+        <div id="quiz-result-box" class="quiz-result-box" style="display:none">
+          <p id="quiz-result-title" class="quiz-result-title"></p>
+          <p id="quiz-result-msg" class="quiz-result-msg"></p>
+          <button class="btn-primary" onclick="showPage('demo'); setTimeout(()=>document.getElementById('explore').scrollIntoView({behavior:'smooth'}),100)">Explore Products</button>
+        </div>
+      </div>
+
+      <div class="quiz-right">
+        <p class="quiz-instruction">Drag &amp; drop items in the order of their ecosystem score</p>
+        <p class="quiz-env-label top">Best for the environment</p>
+        <ul id="quiz-list" class="drag-list"></ul>
+        <p class="quiz-env-label bottom">Worst for the environment</p>
+        <div class="quiz-btn-row">
+          <button class="btn-primary" id="quiz-btn" onclick="checkQuiz()">Check Answers</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: EXPLORE PRODUCTS -->
+    <section class="section card-section" id="explore">
+      <div class="explore-header">
+        <h2 class="section-heading">Explore Products</h2>
+        <p class="explore-sub">Learn more about your impact by checking out everyday products</p>
+      </div>
+      <div class="products-grid" id="products-grid"></div>
+    </section>
+
+  </div><!-- /page-demo -->
+
+  <!-- ABOUT PAGE -->
+  <div id="page-about" class="page" style="display:none">
+    <div class="about-container">
+      <div class="about-left">
+        <div class="about-hero-card">
+          <h1 class="about-heading">
+            Healthy ecosystems is more than a mobile app.
+            <span class="about-heading-accent">It's a mission.</span>
+          </h1>
+        </div>
+        <div class="about-body">
+          <h3 class="about-subheading">Can communities co-create a more equitable world through data?</h3>
+          <p class="about-text">That's what we seek to understand at Healthy Ecosystems. See how your choices affect your neighbors with the Healthy Ecosystems App.</p>
+          <a href="mailto:zumbrun1@msu.edu" class="btn-primary about-btn">Support Us</a>
+        </div>
+      </div>
+      <div class="about-right">
+        <!-- Replace src with your actual food photo -->
+        <img src="food-photo.jpg" alt="Fresh vegetables" class="about-photo" onerror="this.style.background='#d4c9b0';this.style.minHeight='500px';this.style.borderRadius='16px';this.removeAttribute('onerror')" />
+      </div>
+    </div>
+  </div><!-- /page-about -->
+
+  <footer class="footer">
+    <span>© 2026 Healthy Ecosystems</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
